@@ -1,13 +1,21 @@
 package pti.sb_flight_mvc.dto;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+
 
 public class FlightDto {
 	
+	
 	private String depCity;
+
 	private LocalDateTime depTime;
+	
 	private String arrCity;
+	
+
 	private LocalDateTime arrTime;
+	
 	private String flightNumber;
 	private String captain;
 	
@@ -83,6 +91,13 @@ public class FlightDto {
 		this.captain = captain;
 	}
 	
+	public long getDuration() {
+		
+		long result = Duration.between(depTime, arrTime).toMinutes();
+		
+		return result;
+		
+	}
 	
 	
 	

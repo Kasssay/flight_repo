@@ -2,11 +2,16 @@ package pti.sb_flight_mvc.model;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Table(value="flights")
 public class Flight {
+	
+	@Id
+	@Column(value="id")
+	private Integer id;
 	
 	@Column(value="departure_city")
 	private String depCity;
@@ -26,7 +31,14 @@ public class Flight {
 	@Column(value="captain")
 	private String captain;
 
-	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public String getDepCity() {
 		return depCity;
 	}
@@ -74,8 +86,6 @@ public class Flight {
 	public void setCaptain(String captain) {
 		this.captain = captain;
 	}
+
+}	
 	
-	
-	
-	
-}

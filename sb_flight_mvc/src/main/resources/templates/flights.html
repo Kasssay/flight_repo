@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<table cellpadding="5" border="5">
+		<tr>
+			<th>DepCity</th>
+			<th>DepTime</th>
+			<th>ArrCity</th>
+			<th>ArrTime</th>
+			<th>FlightNumber</th>
+			<th>Captain</th>
+			<th th:if="${dtoPack.isFlightTimeVisibility()}">Flight Time(Min)</th>
+		</tr>	
+	
+		<tr th:each="fdto : ${dtoPack.getFlights()}">
+			<td th:text="${fdto.getDepCity()}" ></td>
+			<td th:text="${fdto.getDepTime()}" ></td>
+			<td th:text="${fdto.getArrCity()}" ></td>
+			<td th:text="${fdto.getArrTime()}" ></td>
+			<td th:text="${fdto.getFlightNumber()}" ></td>
+			<td th:text="${fdto.getCaptain()}" ></td>
+			<td th:if="${dtoPack.isFlightTimeVisibility()}" th:text="${fdto.getDuration()}"> <td>
+		</tr>
+	
+	
+	</table>
+	
+	
+</body>
+</html>
