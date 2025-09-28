@@ -6,4 +6,7 @@ import pti.sb_flight_mvc.model.Flight;
 
 public interface FlightRepository extends CrudRepository<Flight,Integer>{
 
+	
+	
+	
 }

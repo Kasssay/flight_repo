@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<table cellpadding="5" border="5">
+		<tr>
+		
+			<th>Captain</th>
+			<th>All Flight Time(Min)</th>
+		</tr>	
+	
+		<tr th:each="cdto : ${captains.getCaptain()}">
+			<td th:text="${cdto.getDepCity()}" ></td>
+			<td th:text="${cdto.getDepTime()}" ></td>
+
+		</tr>
+	
+	
+	</table>
+	
+	
+</body>
+</html>

@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 public class FlightDto {
 	
 	
+	
+
 	private String depCity;
 
 	private LocalDateTime depTime;
@@ -99,6 +101,11 @@ public class FlightDto {
 		
 	}
 	
+	@Override
+	public String toString() {
+		return "FlightDto [depCity=" + depCity + ", depTime=" + depTime + ", arrCity=" + arrCity + ", arrTime="
+				+ arrTime + ", flightNumber=" + flightNumber + ", captain=" + captain + "]";
+	}
 	
 	
 	
