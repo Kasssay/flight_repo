@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	
+	<form action="/plans" method ="post">
+		
+		<p> Dep City </p>
+		<input  type="text" name="depCity">
+		<p> Arr City </p>
+		<input  type="text" name="arrCity">
+		
+		<input type="submit">
+		
+	</form>
+	
+	
+	<div th:if="${routeDto} != null">
+		<table cellpadding="5" border="5">
+			<tr>
+				<th>Routes</th>
+				<th>Waiting Time </th>
+			</tr>	
+		
+			<tr th:each="route : ${routeDto}">
+				<td th:text="${route.getRoute()}" ></td>
+			 	<td th:text="${route.getWaitingTimes()}" ></td>
+			</tr>
+		
+		
+		</table>
+	
+	</div>
+	
+</body>
+</html>

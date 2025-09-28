@@ -1,5 +1,7 @@
 package pti.sb_flight_mvc.service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -73,7 +75,7 @@ public class AppService {
 	//ex 3.1
 	public List<RouteDto> CaptainsRoutes(){
 		
-		// -vissza adja a metódus az összes pilotának az utvonalát.
+		// -vissza adja  az összes pilotának az utvonalát.
 			//a. - összehasonlÍsuk a flightDto-kat és -a1. az egyik érkezési városa a másik indulási városa.
 													//-a2.  és időben az első  leszálási ideje hamarabb volt mint a másadik érkezési ideje.
 													//-a3. és ugzanaz a captain-nel van.
@@ -110,39 +112,130 @@ public class AppService {
 								routeDto.getRoute().add(flightDtoOuter.getArrCity());
 								
 								innenIndex = 0;   //mert újra kell vizsgálni az egész flightDto-t mert változott az utolsó elemje a listánknak.
-								System.out.println("if");
+							
 							
 							// Ha a vizsgálandó járat start városa megeggyezik az utvonal utolsó városával akkor hozza adódik az utvonalhoz.
 								if(flightDtoInnen.getDepCity().equals(routeDto.getRoute().get(routeDto.getRoute().size() -1))) {
 								
 									routeDto.getRoute().add(flightDtoInnen.getArrCity());
-									System.out.println("else");
+									
 									
 									innenIndex = 0;
 								}
 							}		
 						}
 					
-			
 						//ha  már van elemje a  listánknak akkor annak az utolsó elemit hasónlitsuk össze benti flightDto-val.
 						else if(routeDto.getRoute().size() > 0 && flightDtoInnen.getDepCity().equals(routeDto.getRoute().get(routeDto.getRoute().size() -1))){
 							routeDto.getRoute().add(flightDtoInnen.getArrCity());
 							innenIndex = 0;
 						}
 					}
-				}
-					
+				}			
 			}
 			routes.add(routeDto);
 		}
-		
-		
+			
 		return routes;
 	}
+	
+	
+	//ex 3.2
+	
+	//a. bejárjuk a járatokat és elmentünk minden utvonalat.
+	//b. majd kiválasszuk azt az utvonalat amelyikre szükségünk van.
+	
+	
+	public RouteDto routePlanner(String depCity , String arrCity) {
+		
+		RouteDto result = new RouteDto();
+		
+		List<RouteDto> routeDtos = new ArrayList<>();
+		
+		
+		//a.
+		List<FlightDto> flightDtos = getOrderedFlightDtoList(null);
+		
+		for(int outerIndex = 0; outerIndex < flightDtos.size(); outerIndex++) {
+			 
+			FlightDto flightDtoOuter = flightDtos.get(outerIndex);
+			RouteDto actualRouteDto = new RouteDto();
+			
+			for(int innenIndex = 0; innenIndex < flightDtos.size(); innenIndex++) {
+							
+					FlightDto flightDtoInnen = flightDtos.get(innenIndex);
+					
+					//ha az érkezési idő az indulási idő után van
+					if(flightDtoOuter.getDepTime().isBefore(flightDtoInnen.getArrTime())) {
+						
+						//ha az érkezési város egyenlő egy másik flightDto indulási városával
+						if(flightDtoOuter.getArrCity().equals(flightDtoInnen.getDepCity())) {
+							
+							actualRouteDto.getRoute().add(flightDtoOuter.getDepCity());
+							actualRouteDto.getRoute().add(flightDtoOuter.getArrCity());
+							actualRouteDto.getRoute().add(flightDtoInnen.getArrCity());
+							
+							actualRouteDto.getWaitingTimes().add(getDuration(flightDtoOuter.getArrTime(), flightDtoInnen.getDepTime()));
+	
+	
+							}																												//az utolsó elem a listában
+						else if(actualRouteDto.getRoute().size() > 0 && flightDtoInnen.getDepCity().equals(actualRouteDto.getRoute().get(actualRouteDto.getRoute().size() -1))) {
+							
+							actualRouteDto.getRoute().add(flightDtoInnen.getArrCity());
+							actualRouteDto.getWaitingTimes().add(getDuration(flightDtoOuter.getArrTime(), flightDtoInnen.getDepTime()));
+						
+						}
+						
+						//ha körbe értünk az utvonallal.
+						if(actualRouteDto.getRoute().size() > 0 && flightDtoInnen.getArrCity().equals(actualRouteDto.getRoute().get(0))) {
+							
+							break;
+						}
+					
+					}	
+			
+			}		
+			routeDtos.add(actualRouteDto);
+		}
+		
+		//ellenzőrzés
+		for(RouteDto routeDto : routeDtos) {
+			System.out.println("--------");
+			for(String city : routeDto.getRoute()) {
+				System.out.println(city);
+			}
+		}
+		//-------
+		
+		//b.
+		
+		for(RouteDto routeDto : routeDtos) {
+			
+			if(routeDto.getRoute().contains(depCity) && routeDto.getRoute().contains(arrCity)) {
+				
+				result = routeDto;
+			}
+		}
+		
+		
+		return result;
+	
+	}
+	
+	
+	
 
 	//-------------------private metódusok
 		
 	//ex1.1 -1.2
+	
+		private long getDuration(LocalDateTime dep , LocalDateTime arr) {
+			
+			return Duration.between(arr,dep).toMinutes(); 
+			
+		}
+	
+	
 		private List<FlightDto> getOrderedFlightDtoList(Boolean order){
 			
 			List<FlightDto> flightDtos = new ArrayList<>();
@@ -192,9 +285,6 @@ public class AppService {
 			
 		return flightDtos;	
 	}
-	
-	
-	
-	
+
 	
 }
