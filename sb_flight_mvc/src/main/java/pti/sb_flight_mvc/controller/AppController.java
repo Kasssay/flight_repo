@@ -7,8 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+
 import pti.sb_flight_mvc.dto.CaptainDto;
 import pti.sb_flight_mvc.dto.DtoPack;
+import pti.sb_flight_mvc.dto.RouteDto;
 import pti.sb_flight_mvc.service.AppService;
 
 @Controller
@@ -48,6 +50,17 @@ public class AppController {
 		model.addAttribute("captainDtos",captainDtos);
 			
 		return "captains.html";
+		
+	}
+	
+	//ex 3.1
+	@GetMapping("/routes")
+	public String getRoutes(Model model) {
+		
+		List<RouteDto> routesDtos = service.CaptainsRoutes();
+		model.addAttribute("routes", routesDtos);	
+		
+		return "routes.html";
 		
 	}
 	
